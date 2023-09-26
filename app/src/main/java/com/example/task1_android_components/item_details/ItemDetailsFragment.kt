@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import com.example.task1_android_components.Item
 import com.example.task1_android_components.databinding.FragmentItemDetailsBinding
 
+private const val ARG_ID = "id"
+private const val ARG_NAME = "name"
+private const val ARG_DESCRIPTION = "description"
+
 class ItemDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentItemDetailsBinding
@@ -18,20 +22,23 @@ class ItemDetailsFragment : Fragment() {
     ): View {
         binding = FragmentItemDetailsBinding.inflate(inflater, container, false)
 
-        binding.textViewId.text = arguments?.getInt("id").toString()
-        binding.textViewName.text = arguments?.getString("name").toString()
-        binding.textViewDescription.text = arguments?.getString("description").toString()
-
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.textViewId.text = arguments?.getInt(ARG_ID).toString()
+        binding.textViewName.text = arguments?.getString(ARG_NAME)
+        binding.textViewDescription.text = arguments?.getString(ARG_DESCRIPTION)
+    }
 
     companion object {
         fun newInstance(item: Item) = ItemDetailsFragment().apply {
             arguments = Bundle().apply {
-                putInt("id", item.id)
-                putString("name", item.name)
-                putString("description", item.description)
+                putInt(ARG_ID, item.id)
+                putString(ARG_NAME, item.name)
+                putString(ARG_DESCRIPTION, item.description)
             }
         }
     }

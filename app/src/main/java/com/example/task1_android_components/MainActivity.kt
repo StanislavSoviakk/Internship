@@ -17,7 +17,9 @@ import com.example.task1_android_components.utils.Constants
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences by lazy {
+        getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +36,10 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                 0
             )
+        } else {
+            createNotificationChannel()
+            startService()
         }
-
-        createNotificationChannel()
-        startService()
     }
 
     override fun onRequestPermissionsResult(
@@ -53,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchItemDetails() {
-        sharedPreferences = getSharedPreferences("item_id", Context.MODE_PRIVATE)
         val itemsList = Constants.getItemsList()
         val itemId = sharedPreferences.getInt(Constants.ITEM_ID_KEY, -1)
         if (itemId != -1) {
@@ -79,8 +80,8 @@ class MainActivity : AppCompatActivity() {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "running_channel",
-                "running notification",
+                Constants.NOTIFICATION_CHANNEL_ID,
+                Constants.NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             val notificationManager =
