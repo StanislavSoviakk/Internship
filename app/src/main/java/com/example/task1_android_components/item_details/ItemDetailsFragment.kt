@@ -5,16 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.task1_android_components.Item
 import com.example.task1_android_components.databinding.FragmentItemDetailsBinding
+import com.example.task1_android_components.model.Item
 
 private const val ARG_ID = "id"
 private const val ARG_NAME = "name"
 private const val ARG_DESCRIPTION = "description"
 
-class ItemDetailsFragment : Fragment() {
+class ItemDetailsFragment : Fragment(), ItemDetailsContract.View {
 
     private lateinit var binding: FragmentItemDetailsBinding
+
+    private val presenter: ItemDetailsContract.Presenter by lazy {
+        ItemDetailsPresenter(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +31,10 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onViewCreated()
+    }
 
+    override fun displayItemDetails() {
         binding.textViewId.text = arguments?.getInt(ARG_ID).toString()
         binding.textViewName.text = arguments?.getString(ARG_NAME)
         binding.textViewDescription.text = arguments?.getString(ARG_DESCRIPTION)

@@ -1,6 +1,6 @@
 package com.example.task1_android_components.utils
 
-import com.example.task1_android_components.Item
+import com.example.task1_android_components.model.Item
 
 object Constants {
     const val INTENT_ACTION = "NOTIFICATION_CLICKED"
@@ -9,7 +9,7 @@ object Constants {
     const val NOTIFICATION_CHANNEL_ID = "running_channel"
     const val NOTIFICATION_CHANNEL_NAME = "running_notification"
     const val SHARED_PREFERENCES_NAME = "ITEM_ID"
-    fun getItemsList():List<Item> = (0 until 20).map {
+    fun getItemsList(): List<Item> = (0 until 20).map {
         Item(it, "$it name", "$it description")
     }
 }

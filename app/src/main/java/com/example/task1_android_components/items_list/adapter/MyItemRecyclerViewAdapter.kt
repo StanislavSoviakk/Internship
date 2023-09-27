@@ -1,4 +1,4 @@
-package com.example.task1_android_components.items_list
+package com.example.task1_android_components.items_list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.task1_android_components.Item
+import com.example.task1_android_components.model.Item
 import com.example.task1_android_components.databinding.FragmentItemsListItemBinding
 
 

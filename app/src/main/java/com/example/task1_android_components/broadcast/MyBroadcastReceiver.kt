@@ -3,7 +3,7 @@ package com.example.task1_android_components.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.example.task1_android_components.MainActivity
+import com.example.task1_android_components.main.MainActivity
 import com.example.task1_android_components.utils.Constants
 
 class MyBroadcastReceiver : BroadcastReceiver() {
