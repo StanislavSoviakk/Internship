@@ -6,9 +6,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.task1_android_components.model.Item
 import com.example.task1_android_components.databinding.FragmentItemsListItemBinding
-
+import com.example.task1_android_components.model.Item
 
 class MyItemRecyclerViewAdapter(
     private val onItemClick: (item: Item) -> Unit
@@ -50,5 +49,4 @@ class MyItemRecyclerViewAdapter(
             }
         }
     }
-
 }
