@@ -9,14 +9,14 @@ import com.example.task1_android_components.R
 import com.example.task1_android_components.databinding.FragmentItemsListBinding
 import com.example.task1_android_components.item_details.ItemDetailsFragment
 import com.example.task1_android_components.items_list.adapter.MyItemRecyclerViewAdapter
-import com.example.task1_android_components.model.GetItemsListUseCase
+import com.example.task1_android_components.model.GetItemsUseCase
 import com.example.task1_android_components.model.Item
 
 class ItemsListFragment : Fragment(), ItemsListContract.View {
 
     private lateinit var binding: FragmentItemsListBinding
     private val presenter: ItemsListContract.Presenter by lazy {
-        ItemsListPresenter(this, GetItemsListUseCase())
+        ItemsListPresenter(this, GetItemsUseCase())
     }
 
     private val listAdapter by lazy {
