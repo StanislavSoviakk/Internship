@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -18,10 +17,6 @@ import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
 
 class MainActivity : AppCompatActivity() {
-
-    private val sharedPreferences: SharedPreferences by lazy {
-        getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-    }
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -50,8 +45,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
-        val lastItemId = sharedPreferences.getInt(Constants.ITEM_ID_KEY, -1)
-        viewModel.onEvent(MainEvent.OpenItemDetails(itemDetailsArgument, lastItemId))
+        if (itemDetailsArgument != null) {
+            viewModel.onEvent(MainEvent.OpenItemDetails(context = this))
+        }
     }
 
     private fun requestNotificationPermission() {
