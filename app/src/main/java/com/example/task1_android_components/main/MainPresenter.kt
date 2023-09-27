@@ -9,12 +9,10 @@ class MainPresenter(
 ) : MainContract.Presenter {
     override fun onCreate() {
         view.getArguments()
-        view.requestNotificationPermission()
     }
 
     override fun onStart() {
         view.requestNotificationPermission()
-        view.startService()
     }
 
     override fun onPermissionGranted() {
