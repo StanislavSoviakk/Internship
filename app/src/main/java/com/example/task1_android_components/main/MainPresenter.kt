@@ -1,6 +1,8 @@
 package com.example.task1_android_components.main
 
+import android.content.Context
 import com.example.task1_android_components.model.GetItemsListUseCase
+import com.example.task1_android_components.preferences.PreferencesManager
 
 
 class MainPresenter(
@@ -20,10 +22,14 @@ class MainPresenter(
         view.startService()
     }
 
-    override fun handleArguments(itemDetailsArgument: String?) {
+    override fun handleArguments(itemDetailsArgument: String?, context: Context) {
         if (itemDetailsArgument != null) {
-            val itemsList = getItemsListUseCase()
-            view.showItemDetails(itemsList)
+            val pref = PreferencesManager(context)
+            val lastItemId = pref.getLastOpenedItemId()
+            if (lastItemId != -1) {
+                val itemsList = getItemsListUseCase()
+                view.showItemDetails(itemsList[lastItemId])
+            }
         }
     }
 }

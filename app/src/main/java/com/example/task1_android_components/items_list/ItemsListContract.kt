@@ -1,16 +1,17 @@
 package com.example.task1_android_components.items_list
 
+import android.content.Context
 import com.example.task1_android_components.model.Item
 
 interface ItemsListContract {
     interface View {
         fun showItems(itemsList: List<Item>)
         fun showItemDetailsScreen(item: Item)
-        fun saveItemInLocalStorage(itemId: Int)
     }
 
     interface Presenter {
         fun loadItems()
-        fun onItemClick(item: Item)
+
+        fun onItemClick(item: Item, context: Context)
     }
 }

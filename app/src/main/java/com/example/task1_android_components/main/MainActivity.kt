@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -19,10 +18,6 @@ import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
 
 class MainActivity : AppCompatActivity(), MainContract.View {
-
-    private val sharedPreferences: SharedPreferences by lazy {
-        getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-    }
 
     private val presenter: MainContract.Presenter by lazy {
         MainPresenter(this, GetItemsListUseCase())
@@ -72,17 +67,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
-        presenter.handleArguments(itemDetailsArgument)
+        presenter.handleArguments(itemDetailsArgument, applicationContext)
     }
 
-    override fun showItemDetails(itemsList: List<Item>) {
-        val itemId = sharedPreferences.getInt(Constants.ITEM_ID_KEY, -1)
-        if (itemId != -1) {
-            val fragment = ItemDetailsFragment.newInstance(itemsList[itemId])
+    override fun showItemDetails(item: Item) {
+            val fragment = ItemDetailsFragment.newInstance(item)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, fragment)
                 .commit()
-        }
     }
 
     override fun requestNotificationPermission() {
