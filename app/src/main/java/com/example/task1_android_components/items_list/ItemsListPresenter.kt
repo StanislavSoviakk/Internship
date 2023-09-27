@@ -1,13 +1,13 @@
 package com.example.task1_android_components.items_list
 
-import android.content.Context
 import com.example.task1_android_components.model.GetItemsListUseCase
 import com.example.task1_android_components.model.Item
 import com.example.task1_android_components.preferences.PreferencesManager
 
 class ItemsListPresenter(
     private val view: ItemsListContract.View,
-    private val getItemsListUseCase: GetItemsListUseCase
+    private val getItemsListUseCase: GetItemsListUseCase,
+    private val preferences: PreferencesManager
 ) : ItemsListContract.Presenter {
 
     override fun loadItems() {
@@ -15,13 +15,12 @@ class ItemsListPresenter(
         view.showItems(itemsList = itemsList)
     }
 
-    override fun onItemClick(item: Item, context: Context) {
-        saveLastOpenedItemId(itemId = item.id, context = context)
+    override fun onItemClick(item: Item) {
+        saveLastOpenedItemId(itemId = item.id)
         view.showItemDetailsScreen(item = item)
     }
 
-    private fun saveLastOpenedItemId(itemId: Int, context: Context) {
-        val pref = PreferencesManager(context)
-        pref.saveLastOpenedItemId(itemId)
+    private fun saveLastOpenedItemId(itemId: Int) {
+        preferences.saveLastOpenedItemId(itemId)
     }
 }

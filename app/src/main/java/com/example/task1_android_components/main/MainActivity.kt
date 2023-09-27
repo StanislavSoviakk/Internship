@@ -14,19 +14,20 @@ import com.example.task1_android_components.R
 import com.example.task1_android_components.item_details.ItemDetailsFragment
 import com.example.task1_android_components.model.GetItemsListUseCase
 import com.example.task1_android_components.model.Item
+import com.example.task1_android_components.preferences.PreferencesManager
 import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private val presenter: MainContract.Presenter by lazy {
-        MainPresenter(this, GetItemsListUseCase())
+        MainPresenter(this, GetItemsListUseCase(), PreferencesManager(this))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        presenter.onCreate()
+        getArguments()
     }
 
     override fun onRequestPermissionsResult(
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onStart() {
         super.onStart()
-        presenter.onStart()
+        requestNotificationPermission()
     }
 
     override fun startService() {
@@ -65,19 +66,19 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-    override fun getArguments() {
+    private fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
-        presenter.handleArguments(itemDetailsArgument, applicationContext)
+        presenter.handleArguments(itemDetailsArgument)
     }
 
     override fun showItemDetails(item: Item) {
-            val fragment = ItemDetailsFragment.newInstance(item)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, fragment)
-                .commit()
+        val fragment = ItemDetailsFragment.newInstance(item)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, fragment)
+            .commit()
     }
 
-    override fun requestNotificationPermission() {
+    private fun requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                 this,

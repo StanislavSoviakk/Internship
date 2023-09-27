@@ -1,6 +1,5 @@
 package com.example.task1_android_components.items_list
 
-import android.content.Context
 import com.example.task1_android_components.model.Item
 
 interface ItemsListContract {
@@ -12,6 +11,6 @@ interface ItemsListContract {
     interface Presenter {
         fun loadItems()
 
-        fun onItemClick(item: Item, context: Context)
+        fun onItemClick(item: Item)
     }
 }

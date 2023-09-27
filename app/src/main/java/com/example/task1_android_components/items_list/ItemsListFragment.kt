@@ -11,19 +11,18 @@ import com.example.task1_android_components.item_details.ItemDetailsFragment
 import com.example.task1_android_components.items_list.adapter.MyItemRecyclerViewAdapter
 import com.example.task1_android_components.model.GetItemsListUseCase
 import com.example.task1_android_components.model.Item
+import com.example.task1_android_components.preferences.PreferencesManager
 
 class ItemsListFragment : Fragment(), ItemsListContract.View {
 
     private lateinit var binding: FragmentItemsListBinding
     private val presenter: ItemsListContract.Presenter by lazy {
-        ItemsListPresenter(this, GetItemsListUseCase())
+        ItemsListPresenter(this, GetItemsListUseCase(), PreferencesManager(requireContext()))
     }
 
     private val listAdapter by lazy {
         MyItemRecyclerViewAdapter { item ->
-            context?.applicationContext?.let { context ->
-                presenter.onItemClick(item, context)
-            }
+            presenter.onItemClick(item)
         }
     }
 
