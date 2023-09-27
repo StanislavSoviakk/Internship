@@ -35,24 +35,26 @@ class ItemDetailsFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.itemId.observe(viewLifecycleOwner) { id ->
-            binding.textViewId.text = id.toString()
-        }
-
-        viewModel.itemName.observe(viewLifecycleOwner) { name ->
-            binding.textViewName.text = name
-        }
-
-        viewModel.itemDescription.observe(viewLifecycleOwner) { description ->
-            binding.textViewDescription.text = description
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            state.item?.id?.let {
+                binding.textViewId.text = it.toString()
+            }
+            state.item?.name.let {
+                binding.textViewName.text = it
+            }
+            state.item?.description.let {
+                binding.textViewDescription.text = it
+            }
         }
     }
 
     private fun loadArguments() {
-        viewModel.itemId.value = arguments?.getInt(ARG_ID)
-        viewModel.itemName.value = arguments?.getString(ARG_NAME)
-        viewModel.itemDescription.value = arguments?.getString(ARG_DESCRIPTION)
-
+        val itemId = arguments?.getInt(ARG_ID)
+        val itemName = arguments?.getString(ARG_NAME) ?: ""
+        val itemDescription = arguments?.getString(ARG_DESCRIPTION) ?: ""
+        if (itemId != null) {
+            viewModel.onEvent(ItemDetailsEvent.LoadItem(Item(itemId, itemName, itemDescription)))
+        }
     }
 
     companion object {

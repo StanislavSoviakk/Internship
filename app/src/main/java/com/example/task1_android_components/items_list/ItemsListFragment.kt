@@ -35,11 +35,6 @@ class ItemsListFragment : Fragment() {
         )
     }
 
-    private fun onItemClick(item: Item) {
-        saveItemInLocalStorage(itemId = item.id)
-        showItemDetailsScreen(item)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,18 +44,23 @@ class ItemsListFragment : Fragment() {
         return binding.root
     }
 
+    private fun onItemClick(item: Item) {
+        saveItemInLocalStorage(itemId = item.id)
+        showItemDetailsScreen(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.list.adapter = listAdapter
 
         initObserver()
 
-        viewModel.loadItems()
+        viewModel.onEvent(ItemsListEvent.LoadItems)
     }
 
     private fun initObserver() {
-        viewModel.itemsList.observe(viewLifecycleOwner) { itemsList ->
-            showItems(itemsList)
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            showItems(state.itemsList)
         }
     }
 

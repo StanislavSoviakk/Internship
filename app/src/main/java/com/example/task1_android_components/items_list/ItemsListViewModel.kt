@@ -10,11 +10,17 @@ class ItemsListViewModel : ViewModel() {
 
     private val getItemsListUseCase = GetItemsListUseCase()
 
-    private val _itemsList = MutableLiveData<List<Item>>()
-    val itemsList: LiveData<List<Item>> = _itemsList
+    private val _state = MutableLiveData<ItemsListState>()
+    val state: LiveData<ItemsListState> = _state
+
+    fun onEvent(event: ItemsListEvent) {
+        when (event) {
+            ItemsListEvent.LoadItems -> loadItems()
+        }
+    }
 
     fun loadItems() {
         val itemsList: List<Item> = getItemsListUseCase()
-        _itemsList.value = itemsList
+        _state.value = ItemsListState(itemsList)
     }
 }

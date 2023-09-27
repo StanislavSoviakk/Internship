@@ -37,18 +37,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.selectedItem.observe(this) { selectedItem ->
-            val fragment = ItemDetailsFragment.newInstance(selectedItem)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, fragment)
-                .commit()
+        viewModel.state.observe(this) { state ->
+            val selectedItem = state.selectedItem
+            if (selectedItem != null) {
+                val fragment = ItemDetailsFragment.newInstance(selectedItem)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView, fragment)
+                    .commit()
+            }
         }
     }
 
     private fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
         val lastItemId = sharedPreferences.getInt(Constants.ITEM_ID_KEY, -1)
-        viewModel.handleArguments(itemDetailsArgument, lastItemId)
+        viewModel.onEvent(MainEvent.OpenItemDetails(itemDetailsArgument, lastItemId))
     }
 
     private fun requestNotificationPermission() {
