@@ -11,12 +11,15 @@ import com.example.task1_android_components.databinding.FragmentItemsListBinding
 import com.example.task1_android_components.item_details.ItemDetailsFragment
 import com.example.task1_android_components.items_list.adapter.MyItemRecyclerViewAdapter
 import com.example.task1_android_components.model.Item
+import com.example.task1_android_components.preferences.PreferencesManager
 
 class ItemsListFragment : Fragment() {
 
     private lateinit var binding: FragmentItemsListBinding
 
-    private val viewModel: ItemsListViewModel by viewModels()
+    private val viewModel: ItemsListViewModel by viewModels {
+        ItemsListViewModelFactory(PreferencesManager(requireContext().applicationContext))
+    }
 
     private val listAdapter by lazy {
         MyItemRecyclerViewAdapter {
@@ -54,9 +57,7 @@ class ItemsListFragment : Fragment() {
     }
 
     private fun saveItemInLocalStorage(itemId: Int) {
-        context?.let {
-            viewModel.saveLastOpenedItemId(itemId, it.applicationContext)
-        }
+        viewModel.saveLastOpenedItemId(itemId)
     }
 
     private fun showItems(itemsList: List<Item>) {

@@ -13,12 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.task1_android_components.R
 import com.example.task1_android_components.item_details.ItemDetailsFragment
+import com.example.task1_android_components.preferences.PreferencesManager
 import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels {
+        MainViewModelFactory(PreferencesManager(applicationContext))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.selectedItem.observe(this) { selectedItem ->
+        viewModel.getSelectedItem().observe(this) { selectedItem ->
             val fragment = ItemDetailsFragment.newInstance(selectedItem)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView, fragment)
@@ -43,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
         if (itemDetailsArgument != null) {
-            viewModel.openItemDetails(applicationContext)
+            viewModel.openItemDetails()
         }
     }
 

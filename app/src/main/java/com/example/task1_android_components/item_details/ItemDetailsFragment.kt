@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.example.task1_android_components.databinding.FragmentItemDetailsBinding
 import com.example.task1_android_components.model.Item
 
@@ -16,8 +15,6 @@ private const val ARG_DESCRIPTION = "description"
 class ItemDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentItemDetailsBinding
-
-    private val viewModel: ItemDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,28 +27,13 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
         loadArguments()
     }
 
-    private fun initObservers() {
-        viewModel.itemId.observe(viewLifecycleOwner) { id ->
-            binding.textViewId.text = id.toString()
-        }
-
-        viewModel.itemName.observe(viewLifecycleOwner) { name ->
-            binding.textViewName.text = name
-        }
-
-        viewModel.itemDescription.observe(viewLifecycleOwner) { description ->
-            binding.textViewDescription.text = description
-        }
-    }
-
     private fun loadArguments() {
-        viewModel.itemId.value = arguments?.getInt(ARG_ID)
-        viewModel.itemName.value = arguments?.getString(ARG_NAME)
-        viewModel.itemDescription.value = arguments?.getString(ARG_DESCRIPTION)
+        binding.textViewId.text = arguments?.getInt(ARG_ID).toString()
+        binding.textViewName.text = arguments?.getString(ARG_NAME)
+        binding.textViewDescription.text = arguments?.getString(ARG_DESCRIPTION)
 
     }
 
