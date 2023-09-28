@@ -11,11 +11,14 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.task1_android_components.R
 import com.example.task1_android_components.item_details.ItemDetailsFragment
+import com.example.task1_android_components.model.Item
 import com.example.task1_android_components.preferences.PreferencesManager
 import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,15 +38,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.state.observe(this) { state ->
-            val selectedItem = state.selectedItem
-            if (selectedItem != null) {
-                val fragment = ItemDetailsFragment.newInstance(selectedItem)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, fragment)
-                    .commit()
+        lifecycleScope.launch {
+            viewModel.effect.collect { effect ->
+                when (effect) {
+                    is MainEffect.OpenItemDetailsScreen -> openItemDetailsScreen(effect.selectedItem)
+                }
             }
         }
+    }
+
+    private fun openItemDetailsScreen(selectedItem: Item) {
+        val fragment = ItemDetailsFragment.newInstance(selectedItem)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, fragment)
+            .commit()
     }
 
     private fun getArguments() {
