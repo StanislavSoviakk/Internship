@@ -7,44 +7,40 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.task1_android_components.R
+import com.example.task1_android_components.base.BaseActivity
 import com.example.task1_android_components.item_details.ItemDetailsFragment
 import com.example.task1_android_components.model.Item
 import com.example.task1_android_components.preferences.PreferencesManager
 import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
-import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity :
+    BaseActivity<MainEvent, MainState, MainViewModel, MainViewModelFactory>(
+        MainViewModel::class.java
+    ) {
 
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory(PreferencesManager(applicationContext))
+    override fun initUI() {
+        setContentView(R.layout.activity_main)
+        requestNotificationPermission()
+        viewModel = createViewModel(
+            MainViewModelFactory(
+                PreferencesManager(applicationContext),
+                MainReducer()
+            )
+        )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        requestNotificationPermission()
-
-        initObservers()
-
+    override fun initDATA() {
         getArguments()
     }
 
-    private fun initObservers() {
-        lifecycleScope.launch {
-            viewModel.effect.collect { effect ->
-                when (effect) {
-                    is MainEffect.OpenItemDetailsScreen -> openItemDetailsScreen(effect.selectedItem)
-                }
-            }
+    override fun render(state: MainState) {
+        if (state.lastOpenedItem != null) {
+            openItemDetailsScreen(state.lastOpenedItem)
         }
+
     }
 
     private fun openItemDetailsScreen(selectedItem: Item) {
@@ -57,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     private fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
         if (itemDetailsArgument != null) {
-            viewModel.onEvent(MainEvent.OpenItemDetails)
+            viewModel.handleArguments()
         }
     }
 

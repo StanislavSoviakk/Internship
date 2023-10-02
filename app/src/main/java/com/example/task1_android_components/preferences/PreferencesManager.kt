@@ -17,7 +17,7 @@ class PreferencesManager(
         )
     }
 
-    fun saveLastOpenedItemId(itemId: Int){
+    fun saveLastOpenedItemId(itemId: Int) {
         preferences.edit {
             putInt(Constants.ITEM_ID_KEY, itemId)
         }

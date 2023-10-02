@@ -1,34 +1,27 @@
 package com.example.task1_android_components.items_list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.task1_android_components.model.GetItemsListUseCase
-import com.example.task1_android_components.model.Item
+import com.example.task1_android_components.base.BaseViewModel
+import com.example.task1_android_components.items_list.use_cases.SaveLastOpenedItemIdUseCase
+import com.example.task1_android_components.model.use_cases.GetItemsListUseCase
 import com.example.task1_android_components.preferences.PreferencesManager
 
-class ItemsListViewModel(private val preferencesManager: PreferencesManager) : ViewModel() {
+class ItemsListViewModel(
+    preferencesManager: PreferencesManager,
+    reducer: ItemsListReducer
+) : BaseViewModel<ItemsListEvent, ItemsListState>(
+    reducer = reducer,
+    useCasesList = listOf(GetItemsListUseCase(), SaveLastOpenedItemIdUseCase(preferencesManager))
+) {
 
-    private val getItemsListUseCase = GetItemsListUseCase()
-
-    private val _state = MutableLiveData<ItemsListState>()
-    val state: LiveData<ItemsListState> = _state
-
-    fun onEvent(event: ItemsListEvent) {
-        when (event) {
-            ItemsListEvent.LoadItems -> loadItems()
-            is ItemsListEvent.SaveLastOpenedItemId -> saveLastOpenedItemId(
-                itemId = event.itemId
-            )
-        }
+    fun loadItems() {
+        handleEvent(ItemsListEvent.LoadItems)
     }
 
-    private fun loadItems() {
-        val itemsList: List<Item> = getItemsListUseCase()
-        _state.value = ItemsListState(itemsList)
+    fun saveLastOpenedItemId(itemId: Int) {
+        handleEvent(ItemsListEvent.SaveLastOpenedItemId(itemId))
     }
 
-    private fun saveLastOpenedItemId(itemId: Int) {
-        preferencesManager.saveLastOpenedItemId(itemId)
+    override fun createInitialState(): ItemsListState {
+        return ItemsListState(listOf())
     }
 }
