@@ -6,8 +6,7 @@ import com.example.task1_android_components.model.use_cases.GetItemsListUseCase
 import com.example.task1_android_components.preferences.PreferencesManager
 
 class ItemsListViewModel(
-    preferencesManager: PreferencesManager,
-    reducer: ItemsListReducer
+    preferencesManager: PreferencesManager, reducer: ItemsListReducer
 ) : BaseViewModel<ItemsListEvent, ItemsListState>(
     reducer = reducer,
     useCasesList = listOf(GetItemsListUseCase(), SaveLastOpenedItemIdUseCase(preferencesManager))

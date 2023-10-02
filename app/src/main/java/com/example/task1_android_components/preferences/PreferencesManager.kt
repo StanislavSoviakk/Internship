@@ -12,8 +12,7 @@ class PreferencesManager(
 
     private val preferences: SharedPreferences by lazy {
         appContext.getSharedPreferences(
-            Constants.SHARED_PREFERENCES_NAME,
-            Context.MODE_PRIVATE
+            Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE
         )
     }
 

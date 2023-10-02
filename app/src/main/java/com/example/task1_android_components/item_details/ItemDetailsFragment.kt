@@ -17,8 +17,7 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var binding: FragmentItemDetailsBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentItemDetailsBinding.inflate(inflater, container, false)
 

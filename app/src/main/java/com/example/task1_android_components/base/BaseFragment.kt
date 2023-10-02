@@ -5,9 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseFragment<EVENT : BaseEvent, STATE : BaseState,
-        VM : BaseViewModel<EVENT, STATE>, VMFACTORY>(private val modelClass: Class<VM>) :
-    Fragment(), Renderer<STATE> {
+abstract class BaseFragment<EVENT : BaseEvent, STATE : BaseState, VM : BaseViewModel<EVENT, STATE>, VMFACTORY>(
+    private val modelClass: Class<VM>
+) : Fragment(), Renderer<STATE> {
 
     protected lateinit var viewModel: VM
 

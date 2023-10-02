@@ -1,4 +1,3 @@
 package com.example.task1_android_components.base
 
-interface BaseEvent {
-}
+interface BaseEvent

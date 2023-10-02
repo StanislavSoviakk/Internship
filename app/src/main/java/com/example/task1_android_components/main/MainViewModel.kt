@@ -5,11 +5,9 @@ import com.example.task1_android_components.model.use_cases.GetItemsListUseCase
 import com.example.task1_android_components.preferences.PreferencesManager
 
 class MainViewModel(
-    private val preferencesManager: PreferencesManager,
-    reducer: MainReducer
+    private val preferencesManager: PreferencesManager, reducer: MainReducer
 ) : BaseViewModel<MainEvent, MainState>(
-    reducer = reducer,
-    useCasesList = listOf(GetItemsListUseCase())
+    reducer = reducer, useCasesList = listOf(GetItemsListUseCase())
 ) {
 
     fun handleArguments() {
@@ -26,8 +24,7 @@ class MainViewModel(
         }
     }
 
-    private fun getLastOpenedItemId(): Int =
-        preferencesManager.getLastOpenedItemId()
+    private fun getLastOpenedItemId(): Int = preferencesManager.getLastOpenedItemId()
 
 
     override fun createInitialState(): MainState {

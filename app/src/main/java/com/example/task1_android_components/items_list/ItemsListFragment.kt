@@ -40,15 +40,13 @@ class ItemsListFragment :
     override fun initViewModel() {
         viewModel = createViewModel(
             ItemsListViewModelFactory(
-                PreferencesManager(requireContext().applicationContext),
-                ItemsListReducer()
+                PreferencesManager(requireContext().applicationContext), ItemsListReducer()
             )
         )
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentItemsListBinding.inflate(inflater, container, false)
 
@@ -69,10 +67,8 @@ class ItemsListFragment :
     }
 
     private fun showItemDetailsScreen(item: Item) {
-        activity?.supportFragmentManager
-            ?.beginTransaction()
+        activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.fragmentContainerView, ItemDetailsFragment.newInstance(item))
-            ?.addToBackStack(null)
-            ?.commit()
+            ?.addToBackStack(null)?.commit()
     }
 }

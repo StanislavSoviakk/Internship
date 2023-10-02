@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseActivity<EVENT : BaseEvent, STATE : BaseState,
-        VM : BaseViewModel<EVENT, STATE>, VMFACTORY>(
+abstract class BaseActivity<EVENT : BaseEvent, STATE : BaseState, VM : BaseViewModel<EVENT, STATE>, VMFACTORY>(
     private val modelClass: Class<VM>
 ) : AppCompatActivity(), Renderer<STATE> {
 

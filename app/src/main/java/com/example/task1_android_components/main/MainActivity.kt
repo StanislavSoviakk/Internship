@@ -16,18 +16,16 @@ import com.example.task1_android_components.preferences.PreferencesManager
 import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
 
-class MainActivity :
-    BaseActivity<MainEvent, MainState, MainViewModel, MainViewModelFactory>(
-        MainViewModel::class.java
-    ) {
+class MainActivity : BaseActivity<MainEvent, MainState, MainViewModel, MainViewModelFactory>(
+    MainViewModel::class.java
+) {
 
     override fun initUI() {
         setContentView(R.layout.activity_main)
         requestNotificationPermission()
         viewModel = createViewModel(
             MainViewModelFactory(
-                PreferencesManager(applicationContext),
-                MainReducer()
+                PreferencesManager(applicationContext), MainReducer()
             )
         )
     }
@@ -45,8 +43,7 @@ class MainActivity :
 
     private fun openItemDetailsScreen(selectedItem: Item) {
         val fragment = ItemDetailsFragment.newInstance(selectedItem)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, fragment)
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, fragment)
             .commit()
     }
 
@@ -60,9 +57,7 @@ class MainActivity :
     private fun requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                0
+                this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0
             )
         } else {
             createNotificationChannel()
@@ -71,9 +66,7 @@ class MainActivity :
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 0 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

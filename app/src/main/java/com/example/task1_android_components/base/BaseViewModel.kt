@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 abstract class BaseViewModel<EVENT : BaseEvent, STATE : BaseState>(
     private val reducer: Reducer<STATE, EVENT>,
     private val useCasesList: List<UseCase<EVENT, STATE>>
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableLiveData<STATE>()
     val state: LiveData<STATE> = _state

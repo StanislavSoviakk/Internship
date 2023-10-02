@@ -17,9 +17,7 @@ class MyItemRecyclerViewAdapter(
 
         return ViewHolder(
             FragmentItemsListItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
