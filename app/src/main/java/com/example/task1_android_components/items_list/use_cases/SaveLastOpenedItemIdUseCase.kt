@@ -14,4 +14,7 @@ class SaveLastOpenedItemIdUseCase(private val preferencesManager: PreferencesMan
         }
         throw IllegalArgumentException("Unexpected event: $event")
     }
+
+    override fun canHandle(event: ItemsListEvent): Boolean =
+        event is ItemsListEvent.SaveLastOpenedItemId
 }

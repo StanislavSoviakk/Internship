@@ -5,14 +5,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseFragment<EVENT : BaseEvent, STATE : BaseState, VM : BaseViewModel<EVENT, STATE>, VMFACTORY>(
+abstract class BaseFragment<EVENT : BaseEvent, STATE : BaseState, VM : BaseViewModel<EVENT, STATE>>(
     private val modelClass: Class<VM>
 ) : Fragment(), Renderer<STATE> {
 
     protected lateinit var viewModel: VM
 
-    protected fun createViewModel(viewModelFactory: ViewModelProvider.Factory): VM {
-        return ViewModelProvider(this, viewModelFactory)[modelClass]
+    protected fun createViewModel(viewModelFactory: ViewModelProvider.Factory) {
+        viewModel = ViewModelProvider(this, viewModelFactory)[modelClass]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

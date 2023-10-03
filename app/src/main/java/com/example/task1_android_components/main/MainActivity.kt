@@ -16,29 +16,29 @@ import com.example.task1_android_components.preferences.PreferencesManager
 import com.example.task1_android_components.service.RunningService
 import com.example.task1_android_components.utils.Constants
 
-class MainActivity : BaseActivity<MainEvent, MainState, MainViewModel, MainViewModelFactory>(
-    MainViewModel::class.java
+class MainActivity : BaseActivity<MainEvent, MainState, MainViewModel>(
+    MainViewModel::class.java,
 ) {
 
     override fun initUI() {
         setContentView(R.layout.activity_main)
         requestNotificationPermission()
-        viewModel = createViewModel(
-            MainViewModelFactory(
-                PreferencesManager(applicationContext), MainReducer()
-            )
-        )
     }
 
     override fun initDATA() {
         getArguments()
     }
 
-    override fun render(state: MainState) {
-        if (state.lastOpenedItem != null) {
-            openItemDetailsScreen(state.lastOpenedItem)
-        }
+    override fun initEVENT() {
+        viewModel.doOnEvent(onEvent = { event ->
+            (event as MainEvent.LastItemLoaded).also {
+                openItemDetailsScreen(it.item)
+            }
+        }, canHandle = { it is MainEvent.LastItemLoaded })
+    }
 
+    override fun initViewModel() {
+        createViewModel(MainViewModelFactory(PreferencesManager(applicationContext), MainReducer()))
     }
 
     private fun openItemDetailsScreen(selectedItem: Item) {
@@ -50,7 +50,7 @@ class MainActivity : BaseActivity<MainEvent, MainState, MainViewModel, MainViewM
     private fun getArguments() {
         val itemDetailsArgument = intent.getStringExtra(Constants.ITEM_DETAILS_ARGUMENT)
         if (itemDetailsArgument != null) {
-            viewModel.handleArguments()
+            viewModel.loadLastOpenedItem()
         }
     }
 

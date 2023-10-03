@@ -4,26 +4,27 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseActivity<EVENT : BaseEvent, STATE : BaseState, VM : BaseViewModel<EVENT, STATE>, VMFACTORY>(
+abstract class BaseActivity<EVENT : BaseEvent, STATE : BaseState, VM : BaseViewModel<EVENT, STATE>>(
     private val modelClass: Class<VM>
-) : AppCompatActivity(), Renderer<STATE> {
+) : AppCompatActivity() {
 
     lateinit var viewModel: VM
 
-    protected fun createViewModel(viewModelFactory: ViewModelProvider.Factory): VM {
-        return ViewModelProvider(this, viewModelFactory)[modelClass]
+    protected fun createViewModel(viewModelFactory: ViewModelProvider.Factory) {
+        viewModel = ViewModelProvider(this, viewModelFactory)[modelClass]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initUI()
-        viewModel.state.observe(this) {
-            render(it)
-        }
+        initViewModel()
+        initEVENT()
         initDATA()
     }
 
     abstract fun initUI()
     abstract fun initDATA()
+    abstract fun initEVENT()
+    abstract fun initViewModel()
 }

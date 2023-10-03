@@ -1,8 +1,8 @@
 package com.example.task1_android_components.items_list
 
 import com.example.task1_android_components.base.BaseViewModel
+import com.example.task1_android_components.items_list.use_cases.GetItemsListUseCase
 import com.example.task1_android_components.items_list.use_cases.SaveLastOpenedItemIdUseCase
-import com.example.task1_android_components.model.use_cases.GetItemsListUseCase
 import com.example.task1_android_components.preferences.PreferencesManager
 
 class ItemsListViewModel(
@@ -18,9 +18,5 @@ class ItemsListViewModel(
 
     fun saveLastOpenedItemId(itemId: Int) {
         handleEvent(ItemsListEvent.SaveLastOpenedItemId(itemId))
-    }
-
-    override fun createInitialState(): ItemsListState {
-        return ItemsListState(listOf())
     }
 }

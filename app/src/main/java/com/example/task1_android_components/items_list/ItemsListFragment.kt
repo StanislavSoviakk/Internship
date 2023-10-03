@@ -12,10 +12,9 @@ import com.example.task1_android_components.items_list.adapter.MyItemRecyclerVie
 import com.example.task1_android_components.model.Item
 import com.example.task1_android_components.preferences.PreferencesManager
 
-class ItemsListFragment :
-    BaseFragment<ItemsListEvent, ItemsListState, ItemsListViewModel, ItemsListViewModelFactory>(
-        ItemsListViewModel::class.java
-    ) {
+class ItemsListFragment : BaseFragment<ItemsListEvent, ItemsListState, ItemsListViewModel>(
+    ItemsListViewModel::class.java
+) {
 
     private lateinit var binding: FragmentItemsListBinding
 
@@ -38,7 +37,7 @@ class ItemsListFragment :
     }
 
     override fun initViewModel() {
-        viewModel = createViewModel(
+        createViewModel(
             ItemsListViewModelFactory(
                 PreferencesManager(requireContext().applicationContext), ItemsListReducer()
             )
